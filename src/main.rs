@@ -11,12 +11,20 @@ async fn index() -> Result<HttpResponse> {
 #[post("/echo")]
 async fn echo(req_body: String) -> impl Responder {
     let start_time = Instant::now();
-    let response = HttpResponse::Ok().body(req_body.clone());
+    let response_body = req_body.clone().to_lowercase();
     let end_time = Instant::now();
+    let execution_time = end_time - start_time;
 
-    println!("Time taken for 'echo': {:?}", end_time - start_time);
+    let response_message = format!(
+        "{}\nExecution Time: {:?}",
+        response_body, execution_time
+    );
 
-    response
+    println!("Time taken for 'echo': {:?}", execution_time);
+
+    HttpResponse::Ok()
+        .content_type("text/plain") // Set content type to plain text
+        .body(response_message)
 }
 
 #[actix_web::main]
