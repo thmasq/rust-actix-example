@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actix Web Example</title>
+</head>
+<body>
+    <h1>Actix Web Example</h1>
+    <input type="text" id="inputText" placeholder="Enter text">
+    <button id="submitButton">Submit</button>
+    <h2>Response:</h2>
+    <div id="responseContainer"></div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputText = document.getElementById('inputText');
+            const submitButton = document.getElementById('submitButton');
+            const responseContainer = document.getElementById('responseContainer');
+            
+            submitButton.addEventListener('click', async () => {
+                const inputValue = inputText.value;
+                const response = await fetch('/echo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain'
+                    },
+                    body: inputValue
+                });
+                
+                const responseData = await response.text();
+                responseContainer.textContent = responseData;
+            });
+        });
+    </script>
+</body>
+</html>
